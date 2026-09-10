@@ -1,10 +1,14 @@
 :root {
-  --paper: #fffaf4;
-  --ink: #3a2a22;
-  --ink-soft: #7a6558;
-  --line: #e8dcd0;
-  --terracotta: #b05a40;
-  --sage: #6d8a6e;
+  --paper: #fff7fb;
+  --ink: #2d1b4e;
+  --ink-soft: #6b4f8a;
+  --line: #f0d4e8;
+  --terracotta: #e8437a;
+  --coral: #ff6b4a;
+  --gold: #f5b700;
+  --teal: #1db8a0;
+  --violet: #7c5cff;
+  --sage: #2f9e7b;
   --display: 'Fraunces', 'Palatino Linotype', Palatino, serif;
   --sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
   font-family: var(--sans);
@@ -12,8 +16,10 @@
   font-weight: 450;
   color: var(--ink);
   background:
-    radial-gradient(ellipse at top, #f5e6d8 0%, transparent 55%),
-    #efe4d8;
+    radial-gradient(ellipse 90% 60% at 10% -10%, #ffd6e8 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 0%, #d4f5ef 0%, transparent 50%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, #ffe8b8 0%, transparent 45%),
+    #f3e8ff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
