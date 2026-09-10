@@ -1,0 +1,50 @@
+:root {
+  --paper: #fffaf4;
+  --ink: #3a2a22;
+  --ink-soft: #7a6558;
+  --line: #e8dcd0;
+  --terracotta: #b05a40;
+  --sage: #6d8a6e;
+  --display: 'Fraunces', 'Palatino Linotype', Palatino, serif;
+  --sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--sans);
+  line-height: 1.45;
+  font-weight: 450;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at top, #f5e6d8 0%, transparent 55%),
+    #efe4d8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+}
