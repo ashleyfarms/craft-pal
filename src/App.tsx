@@ -11,11 +11,18 @@ import {
   type GiftState,
 } from './lib/gift'
 import {
+  checkoutReturnParams,
+  checkoutUrl,
+  clearCheckoutQuery,
   ensureTrial,
   hasFullAccess,
+  hydratePlusFromIdb,
   isPlusUnlocked,
+  isStripeLinkReady,
+  markCheckoutPending,
+  plusBannerText,
   readPlus,
-  unlockPlusPlaceholder,
+  unlockPlus,
   type PlusState,
   type TrialState,
 } from './lib/billing'
@@ -66,7 +73,23 @@ export default function App() {
     return next
   }, [])
 
+  const applyPlus = useCallback(
+    (
+      opts?: { sessionId?: string; source?: PlusState['source'] },
+      announce = true,
+    ) => {
+      const next = unlockPlus(opts)
+      setPlus(next)
+      if (announce) {
+        flash('Plus unlocked after Stripe checkout — welcome aboard.')
+      }
+      return next
+    },
+    [],
+  )
+
   useEffect(() => {
+    let cancelled = false
     const t = ensureTrial()
     setTrial(t)
 
@@ -77,8 +100,26 @@ export default function App() {
       applyGift(fromUrl, true)
       clearGiftQuery()
     }
+
+    const ret = checkoutReturnParams()
+    if (ret.success) {
+      applyPlus(
+        { sessionId: ret.sessionId || undefined, source: 'stripe-return' },
+        true,
+      )
+      clearCheckoutQuery()
+    }
+
+    void hydratePlusFromIdb().then((fromIdb) => {
+      if (cancelled || !fromIdb) return
+      setPlus((prev) => prev || fromIdb)
+    })
+
     setReady(true)
-  }, [applyGift])
+    return () => {
+      cancelled = true
+    }
+  }, [applyGift, applyPlus])
 
   function redeemGiftCode(raw: string): boolean {
     const who = resolveGiftCode(raw)
@@ -97,9 +138,21 @@ export default function App() {
     redeemGiftCode(giftCode)
   }
 
+  function onSubscribe() {
+    if (!isStripeLinkReady()) {
+      flash('Payment link not ready yet — try again shortly.')
+      return
+    }
+    markCheckoutPending()
+    window.location.href = checkoutUrl({
+      nickname: readNickname() || nickname || undefined,
+    })
+  }
+
   const giftOn = isGiftUnlocked(gift)
   const plusOn = isPlusUnlocked(plus)
   const fullAccess = hasFullAccess({ gift: giftOn, plus: plusOn, trial })
+  const plusLabel = plusBannerText(plus)
 
   function goLogSale() {
     if (!fullAccess) {
@@ -148,7 +201,7 @@ export default function App() {
         )}
         {!giftOn && plusOn && (
           <p className="gift-chip plus" role="status">
-            Subscribed
+            {plusLabel ? 'Plus' : 'Subscribed'}
           </p>
         )}
       </header>
@@ -207,12 +260,9 @@ export default function App() {
             giftOn={giftOn}
             giftFor={gift?.giftFor}
             plusOn={plusOn}
+            plus={plus}
             trial={trial}
-            onSubscribePlaceholder={() => {
-              const next = unlockPlusPlaceholder()
-              setPlus(next)
-              flash('Subscribed on this device (Stripe coming soon).')
-            }}
+            onSubscribe={onSubscribe}
             giftCode={giftCode}
             setGiftCode={setGiftCode}
             onRedeemGift={onGiftSubmit}

@@ -1,13 +1,21 @@
 import type { FormEvent } from 'react'
 import { HelpPalLink } from '../components/HelpPalLink'
-import { PRICE_LABEL, TRIAL_DAYS, trialDaysLeft, type TrialState } from '../lib/billing'
+import {
+  PRICE_LABEL,
+  TRIAL_DAYS,
+  plusBannerText,
+  trialDaysLeft,
+  type PlusState,
+  type TrialState,
+} from '../lib/billing'
 
 type Props = {
   giftOn: boolean
   giftFor?: string
   plusOn: boolean
+  plus: PlusState | null
   trial: TrialState | null
-  onSubscribePlaceholder: () => void
+  onSubscribe: () => void
   giftCode: string
   setGiftCode: (v: string) => void
   onRedeemGift: (e: FormEvent) => void
@@ -18,14 +26,16 @@ export function Subscribe({
   giftOn,
   giftFor,
   plusOn,
+  plus,
   trial,
-  onSubscribePlaceholder,
+  onSubscribe,
   giftCode,
   setGiftCode,
   onRedeemGift,
   giftMsg,
 }: Props) {
   const days = trialDaysLeft(trial)
+  const plusLabel = plusBannerText(plus)
 
   return (
     <section className="screen">
@@ -47,7 +57,7 @@ export function Subscribe({
           </p>
         ) : plusOn ? (
           <p className="gift-banner plus-banner" role="status">
-            Subscribed on this device (placeholder until Stripe is connected).
+            {plusLabel || 'Craft Pal Plus unlocked after Stripe checkout.'}
           </p>
         ) : (
           <p className="muted">
@@ -61,15 +71,17 @@ export function Subscribe({
           <button
             type="button"
             className="btn primary big"
-            onClick={onSubscribePlaceholder}
+            onClick={onSubscribe}
           >
             Subscribe — {PRICE_LABEL}
           </button>
         )}
-        <p className="fineprint">
-          Stripe checkout will plug in here. For now this button unlocks the
-          app locally so you can keep testing.
-        </p>
+        {!giftOn && !plusOn && (
+          <p className="fineprint">
+            Opens Stripe Checkout. After you subscribe, you&apos;ll return here
+            with Plus unlocked on this device. Cancel anytime in Stripe.
+          </p>
+        )}
       </article>
 
       <HelpPalLink />

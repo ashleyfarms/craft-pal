@@ -1,0 +1,1 @@
+https://craft-pal-app.netlify.app/?checkout=success

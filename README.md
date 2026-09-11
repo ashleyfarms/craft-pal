@@ -2,9 +2,20 @@
 
 Track materials, recipes, and sales profit for craft sellers (bows, wreaths, and more).
 
-- **Price (UI):** $4.99/mo after a 14-day free trial (Stripe wiring later)
+- **Price:** $4.99/mo after a 14-day free trial (Stripe Payment Link + soft local trial)
 - **Storage:** localStorage on-device (offline-friendly)
 - **PWA:** Add to Home Screen via `manifest.webmanifest` + service worker
+
+## Stripe checkout
+
+Subscribe opens the Stripe Payment Link:
+
+- **Payment Link:** `https://buy.stripe.com/8x29AMegD0RCd2ZeYd4AU09`
+- **Success redirect:** `https://craft-pal-app.netlify.app/?checkout=success` (also in `public/stripe-success-url.txt`)
+
+Override the link at build time with `VITE_STRIPE_PAYMENT_LINK` (Netlify env). No Stripe secret keys in the frontend — client only needs the Payment Link URL.
+
+On return (`?checkout=success`, `?plus=1`, or a session id), Craft Pal unlocks Plus on this device.
 
 ## Gift unlocks
 
