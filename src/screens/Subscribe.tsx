@@ -1,4 +1,5 @@
 import type { FormEvent } from 'react'
+import { HelpPalLink } from '../components/HelpPalLink'
 import { PRICE_LABEL, TRIAL_DAYS, trialDaysLeft, type TrialState } from '../lib/billing'
 
 type Props = {
@@ -70,6 +71,8 @@ export function Subscribe({
           app locally so you can keep testing.
         </p>
       </article>
+
+      <HelpPalLink />
 
       {!giftOn && (
         <form className="card form" onSubmit={onRedeemGift}>

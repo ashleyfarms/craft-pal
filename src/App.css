@@ -488,3 +488,21 @@
     border-radius: 0 0 1.25rem 1.25rem;
   }
 }
+
+.help-pal-link {
+  margin: 0.35rem 1rem 0.15rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+.help-pal-link.app-help-pal {
+  margin-bottom: 0.35rem;
+}
+.help-pal-link a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.help-pal-link a:hover {
+  color: var(--ink);
+}

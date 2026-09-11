@@ -24,6 +24,7 @@ import { Materials } from './screens/Materials'
 import { Recipes } from './screens/Recipes'
 import { Sales } from './screens/Sales'
 import { Subscribe } from './screens/Subscribe'
+import { HelpPalLink } from './components/HelpPalLink'
 import './App.css'
 
 const TABS: { id: TabId; label: string }[] = [
@@ -219,6 +220,8 @@ export default function App() {
           />
         )}
       </main>
+
+      <HelpPalLink className="app-help-pal" />
 
       <nav className="tabbar" aria-label="Main">
         {TABS.map((t) => (
