@@ -314,3 +314,43 @@ export function hasFullAccess(opts: {
   if (opts.gift || opts.plus) return true
   return isTrialActive(opts.trial)
 }
+
+export const PRICE_USD = 4.99
+export const APP_SLUG = 'craft-pal'
+export const APP_ITEM_NAME = 'Craft Pal subscription'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
+
+/** Fire GA4 purchase + subscribe once per successful checkout (deduped in localStorage). */
+export function trackSubscriptionPurchase(opts: { transactionId?: string; value?: number } = {}) {
+  if (typeof window === 'undefined') return
+  if (typeof window.gtag !== 'function') return
+  const value = opts.value != null ? Number(opts.value) : PRICE_USD
+  const tid = String(opts.transactionId || '').trim() || `local-${APP_SLUG}-${Date.now()}`
+  const key = `ga-sub-${APP_SLUG}-${tid}`
+  try {
+    if (window.localStorage.getItem(key)) return
+    window.localStorage.setItem(key, '1')
+  } catch {
+    /* still fire once this page load */
+  }
+  window.gtag('event', 'purchase', {
+    transaction_id: tid,
+    value,
+    currency: 'USD',
+    items: [{
+      item_name: APP_ITEM_NAME,
+      item_category: 'subscription',
+      price: value,
+    }],
+  })
+  window.gtag('event', 'subscribe', {
+    app: APP_SLUG,
+    value,
+    currency: 'USD',
+  })
+}

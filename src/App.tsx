@@ -23,6 +23,7 @@ import {
   plusBannerText,
   readPlus,
   unlockPlus,
+  trackSubscriptionPurchase,
   type PlusState,
   type TrialState,
 } from './lib/billing'
@@ -107,6 +108,7 @@ export default function App() {
         { sessionId: ret.sessionId || undefined, source: 'stripe-return' },
         true,
       )
+      trackSubscriptionPurchase({ transactionId: ret.sessionId || 'checkout-success' })
       clearCheckoutQuery()
     }
 
