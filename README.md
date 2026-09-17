@@ -1,5 +1,7 @@
 # Craft Pal
 
+**Live:** https://craftpal.help-pal-apps.com
+
 Track materials, recipes, and sales profit for craft sellers (bows, wreaths, and more).
 
 - **Price:** $4.99/mo after a 14-day free trial (Stripe Payment Link + soft local trial)
@@ -11,7 +13,7 @@ Track materials, recipes, and sales profit for craft sellers (bows, wreaths, and
 Subscribe opens the Stripe Payment Link:
 
 - **Payment Link:** `https://buy.stripe.com/8x29AMegD0RCd2ZeYd4AU09`
-- **Success redirect:** `https://craft-pal-app.netlify.app/?checkout=success` (also in `public/stripe-success-url.txt`)
+- **Success redirect:** `https://craftpal.help-pal-apps.com/?checkout=success` (also in `public/stripe-success-url.txt`)
 
 Override the link at build time with `VITE_STRIPE_PAYMENT_LINK` (Netlify env). No Stripe secret keys in the frontend — client only needs the Payment Link URL.
 
@@ -35,4 +37,4 @@ npm run build
 
 ## Deploy
 
-Static site via Netlify (`netlify.toml`). Site name: `craft-pal-app`.
+Static site via Netlify (`netlify.toml`). Custom domain: `craftpal.help-pal-apps.com` (Netlify site: `craft-pal-app`).
