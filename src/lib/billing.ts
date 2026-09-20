@@ -1,14 +1,12 @@
-/** Soft 14-day local trial + Stripe Payment Link checkout for Craft Pal Plus ($4.99/mo). */
+/** Craft Pal is free + ads. Stripe checkout is paused — helpers only clear legacy return URLs. */
 
-export const STRIPE_PAYMENT_LINK =
-  import.meta.env.VITE_STRIPE_PAYMENT_LINK ||
-  'https://buy.stripe.com/8x29AMegD0RCd2ZeYd4AU09'
+export const STRIPE_PAYMENT_LINK = ''
 
 export const TRIAL_KEY = 'craft-pal-trial-v1'
 export const PLUS_KEY = 'craft-pal-plus-v1'
 export const PENDING_KEY = 'craft-pal-checkout-pending-v1'
 export const TRIAL_DAYS = 14
-export const PRICE_LABEL = '$4.99/mo'
+export const PRICE_LABEL = 'Free · with ads'
 
 const IDB_NAME = 'craft-pal-kv'
 
@@ -167,18 +165,12 @@ function parsePlus(raw: string | null): PlusState | null {
 }
 
 export function isStripeLinkReady(): boolean {
-  return /^https?:\/\//i.test(String(STRIPE_PAYMENT_LINK || ''))
+  return false
 }
 
 /** Payment Link URL; attaches client_reference_id from gift nickname when present. */
-export function checkoutUrl(opts: { nickname?: string; email?: string } = {}): string {
-  const link = String(STRIPE_PAYMENT_LINK || '')
-  if (!isStripeLinkReady()) return link
-  const url = new URL(link)
-  const nick = String(opts.nickname || '').trim()
-  if (nick) url.searchParams.set('client_reference_id', nick.slice(0, 80))
-  if (opts.email) url.searchParams.set('prefilled_email', opts.email)
-  return url.toString()
+export function checkoutUrl(_opts: { nickname?: string; email?: string } = {}): string {
+  return ''
 }
 
 export function readPlus(): PlusState | null {
@@ -190,18 +182,14 @@ export function readPlus(): PlusState | null {
   }
 }
 
-export function isPlusUnlocked(state: PlusState | null = readPlus()): boolean {
-  return Boolean(state?.unlocked)
+/** Always unlocked — Craft Pal is free with ads. */
+export function isPlusUnlocked(_state: PlusState | null = readPlus()): boolean {
+  return true
 }
 
 /** Display label — trial end date while in Stripe trial window; then simple Plus. */
-export function plusBannerText(state: PlusState | null = readPlus()): string {
-  if (!state?.unlocked) return ''
-  const endMs = state.trialEnds ? new Date(state.trialEnds).getTime() : NaN
-  if (Number.isFinite(endMs) && endMs > Date.now()) {
-    return `Plus trial active until ${new Date(endMs).toLocaleDateString()}`
-  }
-  return 'Craft Pal Plus · unlocked on this device'
+export function plusBannerText(_state: PlusState | null = readPlus()): string {
+  return 'Free · ad supported'
 }
 
 export function unlockPlus(opts?: {
@@ -306,13 +294,12 @@ export function clearCheckoutQuery() {
   window.history.replaceState({}, '', url.pathname + url.search + url.hash)
 }
 
-export function hasFullAccess(opts: {
+export function hasFullAccess(_opts: {
   gift: boolean
   plus: boolean
   trial: TrialState | null
 }): boolean {
-  if (opts.gift || opts.plus) return true
-  return isTrialActive(opts.trial)
+  return true
 }
 
 export const PRICE_USD = 4.99
@@ -325,32 +312,6 @@ declare global {
   }
 }
 
-/** Fire GA4 purchase + subscribe once per successful checkout (deduped in localStorage). */
-export function trackSubscriptionPurchase(opts: { transactionId?: string; value?: number } = {}) {
-  if (typeof window === 'undefined') return
-  if (typeof window.gtag !== 'function') return
-  const value = opts.value != null ? Number(opts.value) : PRICE_USD
-  const tid = String(opts.transactionId || '').trim() || `local-${APP_SLUG}-${Date.now()}`
-  const key = `ga-sub-${APP_SLUG}-${tid}`
-  try {
-    if (window.localStorage.getItem(key)) return
-    window.localStorage.setItem(key, '1')
-  } catch {
-    /* still fire once this page load */
-  }
-  window.gtag('event', 'purchase', {
-    transaction_id: tid,
-    value,
-    currency: 'USD',
-    items: [{
-      item_name: APP_ITEM_NAME,
-      item_category: 'subscription',
-      price: value,
-    }],
-  })
-  window.gtag('event', 'subscribe', {
-    app: APP_SLUG,
-    value,
-    currency: 'USD',
-  })
+export function trackSubscriptionPurchase(_opts: { transactionId?: string; value?: number } = {}) {
+  /* no-op: Craft Pal is free + ads */
 }

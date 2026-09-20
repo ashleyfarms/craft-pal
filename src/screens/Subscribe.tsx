@@ -1,10 +1,9 @@
 import type { FormEvent } from 'react'
 import { HelpPalLink } from '../components/HelpPalLink'
+import { AdSlot } from '../components/AdSlot'
 import {
   PRICE_LABEL,
-  TRIAL_DAYS,
   plusBannerText,
-  trialDaysLeft,
   type PlusState,
   type TrialState,
 } from '../lib/billing'
@@ -25,63 +24,41 @@ type Props = {
 export function Subscribe({
   giftOn,
   giftFor,
-  plusOn,
   plus,
-  trial,
-  onSubscribe,
   giftCode,
   setGiftCode,
   onRedeemGift,
   giftMsg,
 }: Props) {
-  const days = trialDaysLeft(trial)
   const plusLabel = plusBannerText(plus)
 
   return (
     <section className="screen">
       <header className="screen-head">
-        <h1>Subscribe</h1>
-        <p className="muted">Keep Craft Pal running on your stall tablet</p>
+        <h1>Plan</h1>
+        <p className="muted">Craft Pal is free with ads</p>
       </header>
+
+      <AdSlot slot="header" />
 
       <article className="card price-card">
         <div className="price-tag">{PRICE_LABEL}</div>
         <p>
-          After a {TRIAL_DAYS}-day free trial. Track materials, recipes, and
-          sales offline on this device.
+          Track materials, recipes, and sales offline on this device. Quiet
+          sponsor spots keep the lights on — no subscription.
         </p>
         {giftOn ? (
           <p className="gift-banner" role="status">
-            Gift pass unlocked{giftFor ? ` for ${giftFor}` : ''}. Full access —
-            no payment needed.
-          </p>
-        ) : plusOn ? (
-          <p className="gift-banner plus-banner" role="status">
-            {plusLabel || 'Craft Pal Plus unlocked after Stripe checkout.'}
+            Gift pass unlocked{giftFor ? ` for ${giftFor}` : ''}. Full access.
           </p>
         ) : (
-          <p className="muted">
-            {days > 0
-              ? `${days} day${days === 1 ? '' : 's'} left in your free trial.`
-              : 'Your free trial has ended. Subscribe to keep logging.'}
+          <p className="gift-banner plus-banner" role="status">
+            {plusLabel || 'Free · supported by sponsors'}
           </p>
         )}
-
-        {!giftOn && !plusOn && (
-          <button
-            type="button"
-            className="btn primary big"
-            onClick={onSubscribe}
-          >
-            Subscribe — {PRICE_LABEL}
-          </button>
-        )}
-        {!giftOn && !plusOn && (
-          <p className="fineprint">
-            Opens Stripe Checkout. After you subscribe, you&apos;ll return here
-            with Plus unlocked on this device. Cancel anytime in Stripe.
-          </p>
-        )}
+        <p className="fineprint">
+          Stripe checkout is paused. Legacy return URLs are cleaned up automatically.
+        </p>
       </article>
 
       <HelpPalLink />
