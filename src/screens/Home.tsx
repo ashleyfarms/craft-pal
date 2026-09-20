@@ -1,3 +1,4 @@
+import { AdSlot } from '../components/AdSlot'
 import type { AppData } from '../lib/types'
 import {
   money,
@@ -22,6 +23,7 @@ export function Home({ data, onLogSale, onGoMaterials, onGoRecipes }: Props) {
 
   return (
     <section className="screen">
+      <AdSlot slot="in-feed" />
       <header className="screen-head">
         <h1>Home</h1>
         <p className="muted">Your craft stall at a glance</p>

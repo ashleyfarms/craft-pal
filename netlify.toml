@@ -6,6 +6,13 @@
   NODE_VERSION = "20"
   VITE_BASE = "/"
 
+# Permanent hostname redirect: netlify.app -> clean custom domain
+[[redirects]]
+  from = "https://craft-pal-app.netlify.app/*"
+  to = "https://craftpal.help-pal-apps.com/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

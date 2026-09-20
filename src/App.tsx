@@ -12,15 +12,11 @@ import {
 } from './lib/gift'
 import {
   checkoutReturnParams,
-  checkoutUrl,
   clearCheckoutQuery,
   ensureTrial,
   hasFullAccess,
   hydratePlusFromIdb,
   isPlusUnlocked,
-  isStripeLinkReady,
-  markCheckoutPending,
-  plusBannerText,
   readPlus,
   unlockPlus,
   trackSubscriptionPurchase,
@@ -32,6 +28,7 @@ import { Materials } from './screens/Materials'
 import { Recipes } from './screens/Recipes'
 import { Sales } from './screens/Sales'
 import { Subscribe } from './screens/Subscribe'
+import { AdSlot } from './components/AdSlot'
 import { HelpPalLink } from './components/HelpPalLink'
 import './App.css'
 
@@ -141,20 +138,13 @@ export default function App() {
   }
 
   function onSubscribe() {
-    if (!isStripeLinkReady()) {
-      flash('Payment link not ready yet — try again shortly.')
-      return
-    }
-    markCheckoutPending()
-    window.location.href = checkoutUrl({
-      nickname: readNickname() || nickname || undefined,
-    })
+    flash('Craft Pal is free with ads — no checkout needed.')
+    setTab('subscribe')
   }
 
   const giftOn = isGiftUnlocked(gift)
   const plusOn = isPlusUnlocked(plus)
   const fullAccess = hasFullAccess({ gift: giftOn, plus: plusOn, trial })
-  const plusLabel = plusBannerText(plus)
 
   function goLogSale() {
     if (!fullAccess) {
@@ -201,28 +191,14 @@ export default function App() {
             Gift · {gift?.giftFor || nickname}
           </p>
         )}
-        {!giftOn && plusOn && (
+        {!giftOn && (
           <p className="gift-chip plus" role="status">
-            {plusLabel ? 'Plus' : 'Subscribed'}
+            Free · ads
           </p>
         )}
       </header>
 
-      {!fullAccess && (
-        <div className="soft-paywall" role="status">
-          <p>
-            Your 14-day trial has ended. Subscribe ($4.99/mo) or redeem a gift
-            code to keep tracking.
-          </p>
-          <button
-            type="button"
-            className="btn primary sm"
-            onClick={() => setTab('subscribe')}
-          >
-            See plan
-          </button>
-        </div>
-      )}
+      <AdSlot slot="header" />
 
       <main className="main">
         {tab === 'home' && (
