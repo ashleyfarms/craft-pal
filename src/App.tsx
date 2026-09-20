@@ -17,7 +17,6 @@ import {
   hasFullAccess,
   hydratePlusFromIdb,
   isPlusUnlocked,
-  plusBannerText,
   readPlus,
   unlockPlus,
   trackSubscriptionPurchase,
@@ -146,7 +145,6 @@ export default function App() {
   const giftOn = isGiftUnlocked(gift)
   const plusOn = isPlusUnlocked(plus)
   const fullAccess = hasFullAccess({ gift: giftOn, plus: plusOn, trial })
-  const plusLabel = plusBannerText(plus)
 
   function goLogSale() {
     if (!fullAccess) {
