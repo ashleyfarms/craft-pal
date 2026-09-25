@@ -50,4 +50,4 @@ export type AppData = {
   sales: Sale[]
 }
 
-export type TabId = 'home' | 'materials' | 'recipes' | 'sales' | 'subscribe'
+export type TabId = 'home' | 'materials' | 'recipes' | 'sales' | 'about'

@@ -79,21 +79,7 @@
   color: #7a4a2b;
 }
 
-.soft-paywall {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(90deg, #ffe8f4, #e8fbf6);
-  border-bottom: 1px solid rgba(232, 67, 122, 0.25);
-}
 
-.soft-paywall p {
-  margin: 0;
-  font-size: 0.88rem;
-  color: #6b3f22;
-}
 
 .main {
   flex: 1;

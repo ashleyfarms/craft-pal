@@ -1,51 +1,43 @@
 import type { FormEvent } from 'react'
 import { HelpPalLink } from '../components/HelpPalLink'
 import { AdSlot } from '../components/AdSlot'
-import {
-  PRICE_LABEL,
-  plusBannerText,
-  type PlusState,
-  type TrialState,
-} from '../lib/billing'
 
 type Props = {
   giftOn: boolean
   giftFor?: string
   plusOn: boolean
-  plus: PlusState | null
-  trial: TrialState | null
-  onSubscribe: () => void
   giftCode: string
   setGiftCode: (v: string) => void
   onRedeemGift: (e: FormEvent) => void
   giftMsg: string
 }
 
-export function Subscribe({
+export function About({
   giftOn,
   giftFor,
-  plus,
   giftCode,
   setGiftCode,
   onRedeemGift,
   giftMsg,
 }: Props) {
-  const plusLabel = plusBannerText(plus)
-
   return (
     <section className="screen">
       <header className="screen-head">
-        <h1>Plan</h1>
+        <h1>About</h1>
         <p className="muted">Craft Pal is free with ads</p>
       </header>
 
       <AdSlot slot="header" />
 
       <article className="card price-card">
-        <div className="price-tag">{PRICE_LABEL}</div>
+        <div className="price-tag">Free · with ads</div>
         <p>
-          Track materials, recipes, and sales offline on this device. Quiet
-          sponsor spots keep the lights on — no subscription.
+          Track materials, recipes, and sales on this device. Free with ads —
+          no paid plans.
+        </p>
+        <p className="muted">
+          We don&apos;t sell your personal info. Google Analytics (G-E7PX36SGJE)
+          and ads help keep Craft Pal free. Your numbers stay in this browser.
         </p>
         {giftOn ? (
           <p className="gift-banner" role="status">
@@ -53,12 +45,9 @@ export function Subscribe({
           </p>
         ) : (
           <p className="gift-banner plus-banner" role="status">
-            {plusLabel || 'Free · supported by sponsors'}
+            Free · supported by sponsors
           </p>
         )}
-        <p className="fineprint">
-          Stripe checkout is paused. Legacy return URLs are cleaned up automatically.
-        </p>
       </article>
 
       <HelpPalLink />

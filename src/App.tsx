@@ -13,21 +13,17 @@ import {
 import {
   checkoutReturnParams,
   clearCheckoutQuery,
-  ensureTrial,
-  hasFullAccess,
   hydratePlusFromIdb,
   isPlusUnlocked,
   readPlus,
   unlockPlus,
-  trackSubscriptionPurchase,
   type PlusState,
-  type TrialState,
 } from './lib/billing'
 import { Home } from './screens/Home'
 import { Materials } from './screens/Materials'
 import { Recipes } from './screens/Recipes'
 import { Sales } from './screens/Sales'
-import { Subscribe } from './screens/Subscribe'
+import { About } from './screens/About'
 import { AdSlot } from './components/AdSlot'
 import { HelpPalLink } from './components/HelpPalLink'
 import './App.css'
@@ -37,7 +33,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'materials', label: 'Materials' },
   { id: 'recipes', label: 'Recipes' },
   { id: 'sales', label: 'Sales' },
-  { id: 'subscribe', label: 'Plan' },
+  { id: 'about', label: 'About' },
 ]
 
 export default function App() {
@@ -46,7 +42,6 @@ export default function App() {
   const [focusLog, setFocusLog] = useState(false)
   const [gift, setGift] = useState<GiftState | null>(() => readGift())
   const [plus, setPlus] = useState<PlusState | null>(() => readPlus())
-  const [trial, setTrial] = useState<TrialState | null>(null)
   const [nickname, setNickname] = useState(() => readNickname())
   const [toast, setToast] = useState('')
   const [giftCode, setGiftCode] = useState('')
@@ -79,7 +74,7 @@ export default function App() {
       const next = unlockPlus(opts)
       setPlus(next)
       if (announce) {
-        flash('Plus unlocked after Stripe checkout — welcome aboard.')
+        flash('Welcome — Craft Pal is free with ads.')
       }
       return next
     },
@@ -88,8 +83,6 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false
-    const t = ensureTrial()
-    setTrial(t)
 
     const fromUrl = resolveGiftCode(
       new URLSearchParams(window.location.search).get('gift'),
@@ -105,7 +98,6 @@ export default function App() {
         { sessionId: ret.sessionId || undefined, source: 'stripe-return' },
         true,
       )
-      trackSubscriptionPurchase({ transactionId: ret.sessionId || 'checkout-success' })
       clearCheckoutQuery()
     }
 
@@ -137,33 +129,13 @@ export default function App() {
     redeemGiftCode(giftCode)
   }
 
-  function onSubscribe() {
-    flash('Craft Pal is free with ads — no checkout needed.')
-    setTab('subscribe')
-  }
-
   const giftOn = isGiftUnlocked(gift)
   const plusOn = isPlusUnlocked(plus)
-  const fullAccess = hasFullAccess({ gift: giftOn, plus: plusOn, trial })
 
   function goLogSale() {
-    if (!fullAccess) {
-      setTab('subscribe')
-      flash('Trial ended — subscribe or use a gift code to keep logging.')
-      return
-    }
     setFocusLog(true)
     setTab('sales')
     window.setTimeout(() => setFocusLog(false), 1200)
-  }
-
-  function guardWrite(fn: () => void) {
-    if (!fullAccess) {
-      setTab('subscribe')
-      flash('Trial ended — unlock to edit.')
-      return
-    }
-    fn()
   }
 
   if (!ready) {
@@ -212,35 +184,28 @@ export default function App() {
         {tab === 'materials' && (
           <Materials
             materials={data.materials}
-            onChange={(materials) =>
-              guardWrite(() => persist({ ...data, materials }))
-            }
+            onChange={(materials) => persist({ ...data, materials })}
           />
         )}
         {tab === 'recipes' && (
           <Recipes
             materials={data.materials}
             recipes={data.recipes}
-            onChange={(recipes) =>
-              guardWrite(() => persist({ ...data, recipes }))
-            }
+            onChange={(recipes) => persist({ ...data, recipes })}
           />
         )}
         {tab === 'sales' && (
           <Sales
             data={data}
             focusLog={focusLog}
-            onChange={(sales) => guardWrite(() => persist({ ...data, sales }))}
+            onChange={(sales) => persist({ ...data, sales })}
           />
         )}
-        {tab === 'subscribe' && (
-          <Subscribe
+        {tab === 'about' && (
+          <About
             giftOn={giftOn}
             giftFor={gift?.giftFor}
             plusOn={plusOn}
-            plus={plus}
-            trial={trial}
-            onSubscribe={onSubscribe}
             giftCode={giftCode}
             setGiftCode={setGiftCode}
             onRedeemGift={onGiftSubmit}

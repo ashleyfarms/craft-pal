@@ -15,6 +15,8 @@ export function HelpPalLink({ className = "" }: Props) {
       >
         More apps from Help-Pal
       </a>
+      {" · "}
+      <a href="/privacy.html">Privacy</a>
     </p>
   );
 }

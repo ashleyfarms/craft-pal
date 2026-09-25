@@ -1,4 +1,4 @@
-/** Craft Pal is free + ads. Stripe checkout is paused — helpers only clear legacy return URLs. */
+/** Craft Pal is free + ads. Helpers only clear legacy return URLs. */
 
 export const STRIPE_PAYMENT_LINK = ''
 
@@ -302,9 +302,9 @@ export function hasFullAccess(_opts: {
   return true
 }
 
-export const PRICE_USD = 4.99
+export const PRICE_USD = 0
 export const APP_SLUG = 'craft-pal'
-export const APP_ITEM_NAME = 'Craft Pal subscription'
+export const APP_ITEM_NAME = 'Craft Pal'
 
 declare global {
   interface Window {
