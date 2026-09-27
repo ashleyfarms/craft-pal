@@ -3,7 +3,7 @@ import type { AppData } from '../lib/types'
 import {
   money,
   thisMonthProfit,
-  topRecipeByProfit,
+  topProductByProfit,
 } from '../lib/calc'
 
 type Props = {
@@ -11,11 +11,12 @@ type Props = {
   onLogSale: () => void
   onGoMaterials: () => void
   onGoRecipes: () => void
+  onGoSells: () => void
 }
 
-export function Home({ data, onLogSale, onGoMaterials, onGoRecipes }: Props) {
+export function Home({ data, onLogSale, onGoMaterials, onGoRecipes, onGoSells }: Props) {
   const profit = thisMonthProfit(data.sales, data.recipes, data.materials)
-  const top = topRecipeByProfit(data.sales, data.recipes, data.materials)
+  const top = topProductByProfit(data.sales, data.recipes, data.materials)
   const monthLabel = new Date().toLocaleString(undefined, {
     month: 'long',
     year: 'numeric',
@@ -35,9 +36,9 @@ export function Home({ data, onLogSale, onGoMaterials, onGoRecipes }: Props) {
           <div className="stat-value">{money(profit)}</div>
         </article>
         <article className="stat-card">
-          <div className="stat-label">Top recipe</div>
+          <div className="stat-label">Top product</div>
           <div className="stat-value sm">
-            {top ? top.recipe.name : '—'}
+            {top ? top.key : '—'}
           </div>
           {top && (
             <div className="stat-sub">{money(top.profit)} this month</div>
@@ -57,6 +58,12 @@ export function Home({ data, onLogSale, onGoMaterials, onGoRecipes }: Props) {
         Log a sale
       </button>
 
+      {data.sales.length > 0 && (
+        <button type="button" className="btn ghost big" onClick={onGoSells}>
+          See what sells →
+        </button>
+      )}
+
       <div className="quick-row">
         <button type="button" className="btn ghost" onClick={onGoMaterials}>
           Add material
@@ -68,8 +75,8 @@ export function Home({ data, onLogSale, onGoMaterials, onGoRecipes }: Props) {
 
       {data.sales.length === 0 && (
         <p className="hint-box">
-          Tip: add materials → build a recipe with costs → log sales to see
-          profit. Everything stays on this device.
+          Tip: log each sale with its product line and where you sold it, then
+          check What sells to see your best products and places. Everything stays on this device.
         </p>
       )}
     </section>

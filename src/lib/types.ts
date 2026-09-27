@@ -19,27 +19,27 @@ export type Recipe = {
   createdAt: string
 }
 
-export type SaleChannel =
-  | 'Etsy'
-  | 'Facebook'
-  | 'Craft fair'
-  | 'Consignment'
-  | 'Other'
+/** Suggested "where sold" places shown before the seller has any of their own. */
+export const WHERE_SUGGESTIONS = ['Etsy', 'Facebook Marketplace', 'Craft fair', 'In person']
 
-export const SALE_CHANNELS: SaleChannel[] = [
-  'Etsy',
-  'Facebook',
-  'Craft fair',
-  'Consignment',
-  'Other',
-]
+/** Suggested product lines shown before the seller has any of their own. */
+export const LINE_SUGGESTIONS = ['Bows', 'Wreaths', 'Stuffies']
 
 export type Sale = {
   id: string
-  recipeId: string
+  /** Product name as the seller calls it (e.g. "Christmas bow"). */
+  product: string
+  /** Product line / category (e.g. "Bows"). */
+  line: string
+  /** Where it sold: venue or channel (e.g. "Etsy", "Maple St craft fair"). */
+  where: string
   qty: number
+  /** Sale price per item. */
   sellPrice: number
-  channel: SaleChannel
+  /** Linked recipe; cost per item comes from its materials when set. */
+  recipeId?: string
+  /** Manual cost per item, used when no recipe is linked. */
+  unitCost?: number
   date: string
   createdAt: string
 }
@@ -50,4 +50,4 @@ export type AppData = {
   sales: Sale[]
 }
 
-export type TabId = 'home' | 'materials' | 'recipes' | 'sales' | 'about'
+export type TabId = 'home' | 'materials' | 'recipes' | 'sales' | 'sells' | 'about'

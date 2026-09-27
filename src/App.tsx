@@ -24,6 +24,7 @@ import { Materials } from './screens/Materials'
 import { Recipes } from './screens/Recipes'
 import { Sales } from './screens/Sales'
 import { About } from './screens/About'
+import { WhatSells } from './screens/WhatSells'
 import { AdSlot } from './components/AdSlot'
 import { HelpPalLink } from './components/HelpPalLink'
 import './App.css'
@@ -33,6 +34,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'materials', label: 'Materials' },
   { id: 'recipes', label: 'Recipes' },
   { id: 'sales', label: 'Sales' },
+  { id: 'sells', label: 'What sells' },
   { id: 'about', label: 'About' },
 ]
 
@@ -179,6 +181,7 @@ export default function App() {
             onLogSale={goLogSale}
             onGoMaterials={() => setTab('materials')}
             onGoRecipes={() => setTab('recipes')}
+            onGoSells={() => setTab('sells')}
           />
         )}
         {tab === 'materials' && (
@@ -201,6 +204,7 @@ export default function App() {
             onChange={(sales) => persist({ ...data, sales })}
           />
         )}
+        {tab === 'sells' && <WhatSells data={data} onLogSale={goLogSale} />}
         {tab === 'about' && (
           <About
             giftOn={giftOn}

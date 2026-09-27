@@ -492,3 +492,41 @@
 .help-pal-link a:hover {
   color: var(--ink);
 }
+
+/* ---- Sales log + What sells ---- */
+.tabbar { grid-template-columns: repeat(6, 1fr); }
+.tab { font-size: 0.72rem; padding: 0.6rem 0.1rem; line-height: 1.15; }
+.row-3 { display: grid; grid-template-columns: 4.2rem 1fr 1.35fr; gap: 0.5rem; }
+.row-3 input { min-width: 0; width: 100%; box-sizing: border-box; }
+.pick-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.pick-label { font-size: 0.85rem; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip {
+  appearance: none; font: inherit; font-size: 0.85rem; font-weight: 600;
+  border: 1.5px solid var(--line); background: #fff; color: var(--ink-soft);
+  padding: 0.4rem 0.75rem; border-radius: 999px; cursor: pointer;
+}
+.chip.on { background: var(--terracotta); border-color: var(--terracotta); color: #fff; }
+.chips.period { margin: 0.25rem 0 0.9rem; }
+.form-msg { margin: 0; font-size: 0.88rem; color: var(--sage); font-weight: 600; }
+.list-head { display: flex; align-items: center; justify-content: space-between; margin: 1.25rem 0 0.6rem; }
+.list-head h2, .chart-card h2 { font-family: var(--display); font-size: 1.15rem; margin: 0; }
+.list-item.editing { outline: 2px solid var(--terracotta); }
+.neg { color: #c62828; font-weight: 700; }
+.headline {
+  font-size: 1.05rem; line-height: 1.4; margin: 0 0 0.9rem; padding: 0.85rem 1rem;
+  background: #fff; border-radius: 1rem; border: 2px solid rgba(232, 67, 122, 0.25);
+}
+.stat-grid.three { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.stat-grid.three .stat-card { padding: 0.7rem 0.75rem; }
+.chart-card { margin-bottom: 0.85rem; }
+.chart-card > .muted.xs { margin: 0.1rem 0 0.7rem; }
+.chart-card .chips { margin-bottom: 0.8rem; }
+.bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.bar-top { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.92rem; }
+.bar-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-val { font-weight: 700; white-space: nowrap; }
+.bar-track { height: 0.7rem; background: #f7e6f0; border-radius: 999px; overflow: hidden; margin: 0.25rem 0 0.15rem; }
+.bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--terracotta), var(--coral)); }
+.bar-fill.neg { background: #e57373; }
+.bar-note { font-size: 0.78rem; color: var(--ink-soft); }
