@@ -21,6 +21,41 @@
       rel="stylesheet"
     />
     <title>Craft Pal</title>
+    <script>
+      /* Boot watchdog: if the app bundle fails to load (stale cache / old service worker),
+         clear service workers + caches and reload once per session instead of a blank screen. */
+      (function () {
+        var done = false
+        function heal() {
+          if (done) return
+          done = true
+          try {
+            if (sessionStorage.getItem('cp-healed')) return
+            sessionStorage.setItem('cp-healed', '1')
+          } catch (e) {}
+          var jobs = []
+          try {
+            if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations)
+              jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+                return Promise.all(rs.map(function (r) { return r.unregister() }))
+              }))
+            if (window.caches)
+              jobs.push(caches.keys().then(function (ks) {
+                return Promise.all(ks.map(function (k) { return caches.delete(k) }))
+              }))
+          } catch (e) {}
+          Promise.all(jobs).catch(function () {}).then(function () { location.reload() })
+        }
+        window.addEventListener('error', function (e) {
+          var t = e && e.target
+          if (t && t.tagName === 'SCRIPT' && /\/assets\//.test(t.src || '')) heal()
+        }, true)
+        setTimeout(function () {
+          var r = document.getElementById('root')
+          if (r && !r.childElementCount) heal()
+        }, 12000)
+      })()
+    </script>
     <meta name="google-adsense-account" content="ca-pub-9747855263717273" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9747855263717273"
      crossorigin="anonymous"></script>

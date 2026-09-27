@@ -6,12 +6,27 @@
   NODE_VERSION = "20"
   VITE_BASE = "/"
 
+# Old home-screen installs from craft-pal-app.netlify.app need a real (non-redirected)
+# sw.js so their service worker can update and heal itself (SW scripts cannot follow redirects).
+[[redirects]]
+  from = "https://craft-pal-app.netlify.app/sw.js"
+  to = "/sw.js"
+  status = 200
+  force = true
+
 # Permanent hostname redirect: netlify.app -> clean custom domain
 [[redirects]]
   from = "https://craft-pal-app.netlify.app/*"
   to = "https://craftpal.help-pal-apps.com/:splat"
   status = 301
   force = true
+
+# A missing hashed asset must 404, never fall through to index.html
+# (HTML served as a JS module = blank white screen).
+[[redirects]]
+  from = "/assets/*"
+  to = "/404.html"
+  status = 404
 
 [[redirects]]
   from = "/*"
@@ -29,3 +44,14 @@
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
+    Service-Worker-Allowed = "/"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

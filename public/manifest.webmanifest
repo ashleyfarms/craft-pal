@@ -1,8 +1,10 @@
 {
+  "id": "/",
   "name": "Craft Pal",
   "short_name": "Craft Pal",
   "description": "Track materials, recipes, and sales profit for craft sellers.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#fff7fb",
   "theme_color": "#e8437a",
