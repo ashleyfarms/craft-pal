@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import type { AppData, TabId } from './lib/types'
 import { readData, writeData } from './lib/storage'
 import {
@@ -49,6 +49,12 @@ export default function App() {
   const [giftCode, setGiftCode] = useState('')
   const [giftMsg, setGiftMsg] = useState('')
   const [ready, setReady] = useState(false)
+  const mainRef = useRef<HTMLElement>(null)
+
+  // Each tab opens at the top.
+  useEffect(() => {
+    if (mainRef.current) mainRef.current.scrollTop = 0
+  }, [tab])
 
   function flash(msg: string) {
     setToast(msg)
@@ -174,7 +180,7 @@ export default function App() {
 
       <AdSlot slot="header" />
 
-      <main className="main">
+      <main className="main" ref={mainRef}>
         {tab === 'home' && (
           <Home
             data={data}
