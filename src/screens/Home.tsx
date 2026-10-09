@@ -1,4 +1,5 @@
 import { AdSlot } from '../components/AdSlot'
+import { AmazonPick } from '../components/AmazonPick'
 import type { AppData } from '../lib/types'
 import {
   money,
@@ -79,6 +80,8 @@ export function Home({ data, onLogSale, onGoMaterials, onGoRecipes, onGoSells }:
           check What sells to see your best products and places. Everything stays on this device.
         </p>
       )}
+
+      <AmazonPick />
     </section>
   )
 }

@@ -1,16 +1,13 @@
-/** Small footer Amazon Associates link (tag possjonah-20) + required disclosure. */
+/** Amazon Associates card (tag possjonah-20) + required disclosure. Sits under the Home tools. */
 export function AmazonPick() {
   return (
-    <>
-    <p className="help-pal-link">
-      Get supplies on Amazon:{" "}
-      <a href="https://www.amazon.com/s?k=wired+ribbon&tag=possjonah-20" target="_blank" rel="sponsored noopener">ribbon</a>
-      {" · "}
-      <a href="https://www.amazon.com/s?k=wreath+forms&tag=possjonah-20" target="_blank" rel="sponsored noopener">wreath forms</a>
-    </p>
-    <p className="help-pal-link" style={{ fontSize: "0.7em", opacity: 0.8 }}>
-      As an Amazon Associate I earn from qualifying purchases.
-    </p>
-    </>
+    <aside className="amazon-card" aria-label="Craft supplies on Amazon">
+      <div className="amazon-card-head">Supplies for your makes</div>
+      <div className="amazon-card-btns">
+        <a className="amazon-btn" href="https://www.amazon.com/s?k=wired+ribbon&tag=possjonah-20" target="_blank" rel="sponsored noopener">Shop ribbon on Amazon</a>
+        <a className="amazon-btn" href="https://www.amazon.com/s?k=wreath+forms&tag=possjonah-20" target="_blank" rel="sponsored noopener">Shop wreath forms on Amazon</a>
+      </div>
+      <p className="amazon-disclosure">As an Amazon Associate I earn from qualifying purchases.</p>
+    </aside>
   );
 }
