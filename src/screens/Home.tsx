@@ -1,4 +1,3 @@
-import { AdSlot } from '../components/AdSlot'
 import { AmazonPick } from '../components/AmazonPick'
 import type { AppData } from '../lib/types'
 import {
@@ -25,7 +24,6 @@ export function Home({ data, onLogSale, onGoMaterials, onGoRecipes, onGoSells }:
 
   return (
     <section className="screen">
-      <AdSlot slot="in-feed" />
       <header className="screen-head">
         <h1>Home</h1>
         <p className="muted">Your craft stall at a glance</p>
