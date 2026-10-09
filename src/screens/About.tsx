@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react'
 import { HelpPalLink } from '../components/HelpPalLink'
+import { AmazonPick } from '../components/AmazonPick'
 import { AdSlot } from '../components/AdSlot'
 
 type Props = {
@@ -51,6 +52,7 @@ export function About({
       </article>
 
       <HelpPalLink />
+      <AmazonPick />
 
       {!giftOn && (
         <form className="card form" onSubmit={onRedeemGift}>
